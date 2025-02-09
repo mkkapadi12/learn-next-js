@@ -1,10 +1,10 @@
-"use client";
+export const generateMetadata = ({ params }) => {
+  return {
+    title: `Product ${params.productId}`,
+  };
+};
 
-import { useParams } from "next/navigation";
-// import Image from "next/image";
-
-const ProductPage = () => {
-  const params = useParams(); // ✅ Correct way to access dynamic params in Next.js App Router
+const ProductPage = ({ params }) => {
   const { productId } = params;
 
   return (
@@ -24,11 +24,7 @@ const ProductPage = () => {
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi
             repellat saepe facere. Ducimus tempore distinctio officiis quaerat
             sint pariatur, cumque voluptas, nisi nemo saepe mollitia cupiditate
-            perspiciatis harum quos ipsam! Delectus animi voluptatum voluptates?
-            Totam, cupiditate laboriosam modi aut illum voluptatem aliquid?
-            Tempore eius, at suscipit magnam commodi placeat? Quibusdam sed nisi
-            consequuntur molestias, quae ullam vel voluptas voluptatum
-            reiciendis!
+            perspiciatis harum quos ipsam!
           </p>
           <button className="mt-6 bg-blue-500 text-white px-4 py-2 rounded-lg">
             Add to Cart
