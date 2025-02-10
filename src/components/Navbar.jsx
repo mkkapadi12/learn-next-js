@@ -3,9 +3,17 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Transition } from "@headlessui/react";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+
+  console.log(router.pathname);
+
+  if (router.pathName === "/login") {
+    alert("You are on the login page");
+  }
 
   useEffect(() => {
     if (isOpen) {
@@ -14,6 +22,17 @@ const Navbar = () => {
       document.body.style.overflow = "auto";
     }
   }, [isOpen]);
+
+  const handleLinkClick = () => {
+    setIsOpen(false);
+  };
+
+  const mobileLinks = [
+    { name: "Home", href: "/" },
+    { name: "About", href: "/about" },
+    { name: "Blog", href: "/blog" },
+    { name: "Contact", href: "/contact" },
+  ];
 
   return (
     <nav className="bg-gray-800">
@@ -27,38 +46,36 @@ const Navbar = () => {
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
-                <Link
-                  href="/"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/about"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  About
-                </Link>
-                <Link
-                  href="/blog"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Blog
-                </Link>
-                <Link
-                  href="/contact"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Contact
-                </Link>
-                <Link
-                  href="/products"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Products
-                </Link>
+                {
+                  // Add the following code to display the links in the Navbar
+                  mobileLinks.map((link, index) => {
+                    return (
+                      <Link
+                        key={index}
+                        href={link.href}
+                        className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                      >
+                        {link.name}
+                      </Link>
+                    );
+                  })
+                }
               </div>
             </div>
+          </div>
+          <div className="hidden md:flex items-center space-x-4">
+            <Link
+              href="/login"
+              className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+            >
+              Login
+            </Link>
+            <Link
+              href="/register"
+              className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+            >
+              Sign Up
+            </Link>
           </div>
           <div className="-mr-2 flex md:hidden">
             <button
@@ -69,7 +86,6 @@ const Navbar = () => {
               aria-expanded={isOpen}
             >
               <span className="sr-only">Open main menu</span>
-              {/* {!isOpen && ( */}
               <svg
                 className="block h-6 w-6"
                 xmlns="http://www.w3.org/2000/svg"
@@ -85,13 +101,11 @@ const Navbar = () => {
                   d="M4 6h16M4 12h16m-7 6h7"
                 />
               </svg>
-              {/* )} */}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Fixed Transition */}
       <Transition
         show={isOpen}
         enter="transition ease-out duration-300 transform"
@@ -105,7 +119,10 @@ const Navbar = () => {
           className="md:hidden fixed inset-0 bg-gray-800 z-50"
           id="mobile-menu"
         >
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <h1 className="text-white text-2xl font-bold absolute top-3 left-3">
+            <Link href="/">MyApp</Link>
+          </h1>
+          <div className="px-2 pt-2 pb-3 space-y-1 h-[95%] justify-between sm:px-3 flex flex-col items-start mt-10">
             <button
               onClick={() => setIsOpen(false)}
               type="button"
@@ -129,30 +146,35 @@ const Navbar = () => {
                 />
               </svg>
             </button>
-            <Link
-              href="/"
-              className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-            >
-              Home
-            </Link>
-            <Link
-              href="/about"
-              className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-            >
-              About
-            </Link>
-            <Link
-              href="/blog"
-              className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-            >
-              Blog
-            </Link>
-            <Link
-              href="/contact"
-              className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-            >
-              Contact
-            </Link>
+            <div>
+              {mobileLinks.map((link, index) => (
+                <Link
+                  key={index}
+                  href={link.href}
+                  className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                  onClick={handleLinkClick}
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
+
+            <div>
+              <Link
+                href="/login"
+                onClick={handleLinkClick}
+                className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+              >
+                Login
+              </Link>
+              <Link
+                href="/register"
+                onClick={handleLinkClick}
+                className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+              >
+                Sign Up
+              </Link>
+            </div>
           </div>
         </div>
       </Transition>
