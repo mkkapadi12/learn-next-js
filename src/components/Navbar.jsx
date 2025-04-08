@@ -3,17 +3,18 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Transition } from "@headlessui/react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation"; // ⬅️ Add usePathname
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname(); // ⬅️ Get the current route
 
-  console.log(router.pathname);
-
-  if (router.pathName === "/login") {
-    alert("You are on the login page");
-  }
+  useEffect(() => {
+    if (pathname === "/login") {
+      alert("You are on the login page");
+    }
+  }, [pathname]); // ⬅️ Run only when pathname changes
 
   useEffect(() => {
     if (isOpen) {
@@ -32,6 +33,9 @@ const Navbar = () => {
     { name: "About", href: "/about" },
     { name: "Blog", href: "/blog" },
     { name: "Contact", href: "/contact" },
+    { name: "Data", href: "/posts" },
+    { name: "Docs", href: "/docs" },
+    { name: "Shop", href: "/products" },
   ];
 
   return (
